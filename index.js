@@ -133,10 +133,6 @@ https://github.com/Arslan-MD/Arslan-MD-Ultra
 
     conn.ev.on('creds.update', saveCreds)
 
-  } catch (err) {
-    console.error("[ ❌ ] Connection failed:", err)
-  }
-
 //==============================
 
 conn?.ev?.on('messages.update', async updates => {
