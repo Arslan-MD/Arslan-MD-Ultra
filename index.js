@@ -81,40 +81,34 @@ setInterval(clearTempDir, 5 * 60 * 1000)
   const port = process.env.PORT || 8000;
 
 //=============================================
-
 async function connectToWA() {
-  try {
-    console.log("[ ♻ ] Connecting to WhatsApp ⏳️...")
-
-    const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/sessions/')
-    const { version } = await fetchLatestBaileysVersion()
-
-    conn = makeWASocket({
-      logger: P({ level: 'silent' }),
-      printQRInTerminal: false,
-      browser: Browsers.macOS("Firefox"),
-      syncFullHistory: true,
-      auth: state,
-      version
-    })
-
-    conn.ev.on('connection.update', async (update) => {
-      const { connection, lastDisconnect } = update
-
-      if (connection === 'close') {
-        const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
-        if (shouldReconnect) {
-          await connectToWA()
-        }
-      } else if (connection === 'open') {
-        try {
-          console.log('[ 🧬 ] Installing Plugins')
-
-          fs.readdirSync("./plugins/").forEach((plugin) => {
-            if (path.extname(plugin).toLowerCase() === ".js") {
-              require("./plugins/" + plugin)
-            }
+  console.log("Connecting wa bot 🧬...");
+  const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys/')
+  var { version } = await fetchLatestBaileysVersion()
+  
+  const conn = makeWASocket({
+          logger: P({ level: 'silent' }),
+          printQRInTerminal: false,
+          browser: Browsers.macOS("Firefox"),
+          syncFullHistory: true,
+          auth: state,
+          version
           })
+      
+  conn.ev.on('connection.update', (update) => {
+  const { connection, lastDisconnect } = update
+  if (connection === 'close') {
+  if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
+  connectToWA()
+  }
+  } else if (connection === 'open') {
+  console.log('😼 Please wait, Installing... Plugins ')
+  const path = require('path');
+  fs.readdirSync("./plugins/").forEach((plugin) => {
+  if (path.extname(plugin).toLowerCase() == ".js") {
+  require("./plugins/" + plugin);
+  }
+  });
 
           console.log('[ ✔ ] Plugins installed successfully ✅')
           console.log('[ 🪀 ] Bot connected to WhatsApp 📲')
