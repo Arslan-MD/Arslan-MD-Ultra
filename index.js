@@ -127,19 +127,7 @@ https://youtube.com/@arslanmdofficial
 https://github.com/Arslan-MD/Arslan-MD-Ultra
 
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴍᴀʟᴠɪɴ ᴋɪɴɢ 🇿🇼`;
-    conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/lm4a0b.jpg` }, caption: up })
-
-          const channelJid = "120363348739987203@newsletter"
-          try {
-            await conn.newsletterFollow(channelJid)
-            console.log(`Successfully followed channel: ${channelJid}`)
-          } catch (error) {
-            console.error(`Failed to follow channel: ${error}`)
-          }
-
-        } catch (error) {
-          console.error("[ ❌ ] Error during post-connect setup:", error)
-        }
+    conn.sendMessage(conn.user.id, { image: { url: `https://files.catbox.moe/lm4a0b.jpg` }, caption: up })         
       }
     })
 
